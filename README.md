@@ -224,3 +224,108 @@ SELECT
     cantidad_requerida, 
     polipiel.fx_validar_stock_material(fk_material, cantidad_requerida) AS suficiente_stock
 FROM polipiel.producto_material;
+
+## Procedimientos Implementadas
+1. Procedimiento: Actualizar Precios de Detalle de Venta
+Descripción: Permite aplicar incrementos o rebajas porcentuales a los precios unitarios de los productos en los detalles de ventas. También actualiza automáticamente los subtotales y registra el porcentaje aplicado.
+Propósito: Facilitar el mantenimiento de precios al reflejar ajustes globales en los valores de los productos, asegurando la consistencia de los subtotales.
+
+CÓDIGO:
+DROP PROCEDURE IF EXISTS polipiel.sp_actualizar_precios_detalle_venta;
+
+DELIMITER //
+CREATE PROCEDURE polipiel.sp_actualizar_precios_detalle_venta(
+    IN porcentaje DECIMAL(5,2)
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT * 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_NAME='detalle_venta' 
+        AND COLUMN_NAME='porcentaje_aplicado'
+    ) THEN
+        ALTER TABLE polipiel.detalle_venta ADD porcentaje_aplicado DECIMAL(5,2);
+    END IF;
+
+    UPDATE polipiel.detalle_venta
+    SET precio_unitario = ROUND(precio_unitario * (1 + (porcentaje / 100)), 2),
+        subtotal = ROUND(cantidad * (precio_unitario * (1 + (porcentaje / 100))), 2),
+        porcentaje_aplicado = porcentaje;
+END //
+DELIMITER ;
+
+EJEMPLO DE USO:
+CALL polipiel.sp_actualizar_precios_detalle_venta(10); -- Incrementa precios en 10%
+CALL polipiel.sp_actualizar_precios_detalle_venta(-5); -- Rebaja precios en 5%
+
+2. Procedimiento: Generar Reporte de Ventas Mensual
+Descripción: Genera un informe con las ventas realizadas en un mes específico, desglosadas por producto. Incluye la cantidad total vendida, el monto total de ventas y las fechas de venta.
+Propósito: Proveer un resumen mensual que ayude en el análisis de desempeño de productos y temporadas.
+
+CÓDIGO:
+DROP PROCEDURE IF EXISTS polipiel.reporte_ventas_mensual;
+
+DELIMITER //
+
+CREATE PROCEDURE polipiel.reporte_ventas_mensual(
+    IN año INT,
+    IN mes INT
+)
+BEGIN
+    SELECT 
+        p.nombre_producto,
+        SUM(dv.cantidad) AS total_cantidad_vendida,
+        SUM(dv.subtotal) AS total_ventas,
+        GROUP_CONCAT(DISTINCT DATE(v.fecha_venta) ORDER BY v.fecha_venta ASC SEPARATOR ', ') AS fechas_ventas
+    FROM 
+        polipiel.venta v
+    JOIN 
+        polipiel.detalle_venta dv ON v.id_venta = dv.fk_venta
+    JOIN 
+        polipiel.producto p ON dv.fk_producto = p.id_producto
+    WHERE 
+        YEAR(v.fecha_venta) = año AND MONTH(v.fecha_venta) = mes
+    GROUP BY 
+        p.nombre_producto;
+END //
+DELIMITER ;
+
+EJEMPLO DE USO:
+CALL polipiel.reporte_ventas_mensual(2024, 1); -- Genera reporte para enero de 2024
+
+## Triggers Implementados
+1. Trigger: Registrar Cambios en el Estado de Ventas
+Descripción: Registra en una tabla de auditoría (historial_venta) cada cambio en el estado de una venta, almacenando el estado anterior, el nuevo estado, y otros datos relevantes como el empleado que realizó la acción y la fecha del cambio.
+Propósito: Proveer un historial detallado para auditar los cambios en las ventas y garantizar trazabilidad.
+
+CÓDIGO:
+DROP TRIGGER IF EXISTS polipiel.registrar_historial_venta;
+
+DELIMITER //
+
+CREATE TRIGGER polipiel.registrar_historial_venta
+AFTER UPDATE ON polipiel.venta
+FOR EACH ROW
+BEGIN
+    IF NEW.estado != OLD.estado THEN
+        INSERT INTO polipiel.historial_venta (fk_venta, fk_empleado, estado_anterior, estado_nuevo, fecha_cambio, comentario)
+        VALUES (NEW.id_venta, NEW.fk_empleado, OLD.estado, NEW.estado, NOW(), 'Estado actualizado');
+    END IF;
+END //
+DELIMITER ;
+
+EJEMPLO DE USO:
+INSERT INTO polipiel.venta (fk_cliente, fk_empleado, fk_pago, fk_canal, fk_transporte, fecha_venta, estado, total)
+VALUES (5, 5, 1, 1, 1, '2024-11-27', 'Pendiente', 150000.00);
+
+ACTUALIZAR EL ESTADO DE LA VENTA:
+UPDATE polipiel.venta
+SET estado = 'Enviado'
+WHERE id_venta = 11; -- Usar el ID correspondiente
+
+CONSULTAR EL HISTORIAL DE LA VENTA:
+SELECT * 
+FROM polipiel.historial_venta 
+WHERE fk_venta = 11;
+
+
