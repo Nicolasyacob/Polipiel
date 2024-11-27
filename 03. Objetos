@@ -1,5 +1,7 @@
 USE polipiel;
 
+## VISTAS
+
 -- Vista 1: Ventas Totales por Cliente
 -- Esta vista muestra el total de ventas por cada cliente.
 
@@ -27,6 +29,8 @@ GROUP BY cv.nombre_canal;
 
 ----------------------------------------------------------
 
+## FUNCIONES
+
 DROP FUNCTION IF EXISTS polipiel.fx_validar_email;
 -- Function 1: Validar Formato de Email. Vamos a crear una función que valide si el email de un cliente está en el formato correcto.
 
@@ -48,8 +52,6 @@ SELECT
     email, 
     polipiel.fx_validar_email(email) AS email_valido
 FROM polipiel.cliente;
-
-
 
 -- Function 2: Función para Validar Disponibilidad de Materiales. Esto puede ayudarte a prevenir situaciones donde intentes vender productos para los cuales no tienes suficientes materiales.
 
@@ -75,6 +77,48 @@ SELECT
     cantidad_requerida, 
     polipiel.fx_validar_stock_material(fk_material, cantidad_requerida) AS suficiente_stock
 FROM polipiel.producto_material;
+
+----------------------------------------------------------
+
+# PROCEDIMIENTOS
+-- Procedimiento para mantener actualiado los precios de ventas al aplicarse aumentos o rebajas %
+
+USE polipiel;
+
+SELECT *
+FROM polipiel.detalle_venta
+
+DROP PROCEDURE IF EXISTS polipiel.sp_actualizar_precios_detalle_venta
+
+DELIMITER //
+CREATE PROCEDURE polipiel.sp_actualizar_precios_detalle_venta(
+    IN porcentaje DECIMAL(5,2)
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT * 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_NAME='detalle_venta' 
+        AND COLUMN_NAME='porcentaje_aplicado'
+    ) THEN
+        ALTER TABLE polipiel.detalle_venta ADD porcentaje_aplicado DECIMAL(5,2);
+    END IF;
+
+    -- Actualiza precios y subtotal
+    UPDATE polipiel.detalle_venta
+    SET precio_unitario = ROUND(precio_unitario * (1 + (porcentaje / 100)), 2),
+        subtotal = ROUND(cantidad * (precio_unitario * (1 + (porcentaje / 100))), 2),
+        porcentaje_aplicado = porcentaje;
+END //
+
+DELIMITER ;
+
+SET SQL_SAFE_UPDATES = 0;
+
+CALL polipiel.sp_actualizar_precios_detalle_venta(10); -- Aumenta los precios en un 10%
+CALL polipiel.sp_actualizar_precios_detalle_venta(-5); -- Disminuye los precios en un 5%
+
+SET SQL_SAFE_UPDATES = 1;
 
 
 
