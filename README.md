@@ -137,3 +137,90 @@ Este modelo de base de datos busca organizar y optimizar la gestión de clientes
 
 ## Relaciones
 Cada cliente puede realizar múltiples ventas, las cuales son gestionadas por empleados y están vinculadas a un método de pago específico, un canal de venta y una opción de transporte. Los productos vendidos en cada venta y la cantidad requerida de materiales se especifican en la tabla de detalle de ventas y se gestionan a través de la tabla de producto-material. Los materiales necesarios para la fabricación de los productos están relacionados con sus respectivos colores. El inventario de materiales, incluyendo su cantidad disponible y costo unitario, se gestiona en la tabla de stock-materiales, que también rastrea la relación con el empleado responsable y el proveedor del material. Además, el historial de ventas lleva un registro de los cambios de estado de cada venta, efectuados por los empleados, proporcionando un seguimiento detallado de todas las transacciones.
+
+## Problemática Resuelta
+Este modelo facilita la gestión integral de la empresa, permitiendo:
+- Registrar clientes y transacciones de ventas con sus detalles, optimizando la trazabilidad y el historial de cambios.
+- Controlar el stock de materiales y productos, incluyendo las relaciones con los proveedores y empleados responsables.
+- Analizar ventas por canales y métodos de pago, obteniendo una mejor visión sobre el rendimiento comercial de la empresa.
+
+## Vistas, Funciones, Procedimientos y Triggers Implementadas
+
+## Vistas Implementadas
+- 1.Vista: Ventas Totales por Cliente
+Descripción: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
+Propósito: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
+
+CODIGO: 
+CREATE VIEW polipiel.ventas_totales_por_cliente AS
+SELECT 
+    c.id_cliente,
+    c.nombre,
+    c.apellido,
+    SUM(v.total) AS total_ventas
+FROM polipiel.cliente c
+JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
+GROUP BY c.id_cliente, c.nombre, c.apellido;
+
+- 2.Vista: Ventas por Canal de Venta
+Descripción: Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
+Propósito: Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
+
+CODIGO: 
+CREATE VIEW polipiel.ventas_por_canal AS
+SELECT 
+    cv.nombre_canal,
+    COUNT(v.id_venta) AS cantidad_ventas,
+    SUM(v.total) AS total_ventas
+FROM polipiel.venta v
+JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
+GROUP BY cv.nombre_canal;
+
+## Funciones Implementadas
+1. Función: Validar Formato de Email
+Descripción: Verifica si el correo electrónico de un cliente está en un formato válido.
+Propósito: Garantizar que los correos electrónicos registrados sean correctos, evitando datos incorrectos o inválidos.
+
+CODIGO:
+DELIMITER //
+CREATE FUNCTION polipiel.fx_validar_email(email VARCHAR(200))
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE resultado BOOLEAN;
+    SET resultado = (email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
+    RETURN resultado;
+END //
+DELIMITER ;
+
+EJEMPLO DE USO:
+SELECT 
+    nombre, 
+    email, 
+    polipiel.fx_validar_email(email) AS email_valido
+FROM polipiel.cliente;
+
+2. Función: Validar Disponibilidad de Materiales
+Descripción: Comprueba si existe suficiente stock de un material específico para cubrir una cantidad requerida.
+Propósito: Ayudar a evitar la generación de órdenes para productos que no pueden fabricarse por falta de materiales.
+
+CODIGO:
+DELIMITER //
+CREATE FUNCTION polipiel.fx_validar_stock_material(fk_material INT, cantidad_requerida INT)
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE disponible INT;
+    SELECT cantidad_disponible INTO disponible 
+    FROM stock_material 
+    WHERE stock_material.fk_material = fk_material;
+    RETURN disponible >= cantidad_requerida;
+END //
+DELIMITER ;
+
+EJEMPLO DE USO:
+SELECT 
+    fk_material, 
+    cantidad_requerida, 
+    polipiel.fx_validar_stock_material(fk_material, cantidad_requerida) AS suficiente_stock
+FROM polipiel.producto_material;
