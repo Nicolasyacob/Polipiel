@@ -328,4 +328,46 @@ SELECT *
 FROM polipiel.historial_venta 
 WHERE fk_venta = 11;
 
+2. Trigger:
+Descripción: Este trigger asegura que antes de insertar un registro en la tabla detalle_venta, la cantidad solicitada del producto no exceda la cantidad disponible en el stock de materiales necesarios para fabricarlo
+
+CÓDIGO:
+DELIMITER //
+
+CREATE TRIGGER validar_stock_simple
+BEFORE INSERT ON detalle_venta
+FOR EACH ROW
+BEGIN
+    DECLARE stock_disponible INT;
+
+    -- Obtener la cantidad disponible del material asociado al producto
+    SELECT SUM(sm.cantidad_disponible) INTO stock_disponible
+    FROM stock_material sm
+    JOIN producto_material pm ON sm.fk_material = pm.fk_material
+    WHERE pm.fk_producto = NEW.fk_producto;
+
+    -- Validar que la cantidad disponible sea suficiente
+    IF stock_disponible < NEW.cantidad THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para el producto';
+    END IF;
+END //
+
+DELIMITER ;
+
+EJEMPLO DE USO:
+INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
+VALUES (1, 1, 5, 1000.00, 5000.00); 
+
+1. Insertar un Detalle de Venta con Stock Suficiente
+INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
+VALUES (1, 1, 5, 1000.00, 5000.00); 
+
+2. Insertar un Detalle de Venta con Stock Insuficiente
+INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
+VALUES (1, 1, 1000, 1000.00, 1000000.00); -- Ajustar valores según el stock actual
+
+## Resultado esperado: El sistema lanza el error: Stock insuficiente para el producto, y la inserción es cancelada.
+
+
+
 
