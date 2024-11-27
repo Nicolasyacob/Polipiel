@@ -147,11 +147,11 @@ Este modelo facilita la gestión integral de la empresa, permitiendo:
 ## Vistas, Funciones, Procedimientos y Triggers Implementadas
 
 ## Vistas Implementadas
-- 1.Vista: Ventas Totales por Cliente
-Descripción: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
-Propósito: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
+**- 1.Vista: Ventas Totales por Cliente**
+**Descripción**: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
+**Propósito**: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
 
-CODIGO: 
+**CODIGO:**
 CREATE VIEW polipiel.ventas_totales_por_cliente AS
 SELECT 
     c.id_cliente,
@@ -162,11 +162,11 @@ FROM polipiel.cliente c
 JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
 GROUP BY c.id_cliente, c.nombre, c.apellido;
 
-- 2.Vista: Ventas por Canal de Venta
-Descripción: Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
-Propósito: Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
+**- 2.Vista: Ventas por Canal de Venta**
+**Descripción:** Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
+**Propósito:** Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
 
-CODIGO: 
+**CODIGO:** 
 CREATE VIEW polipiel.ventas_por_canal AS
 SELECT 
     cv.nombre_canal,
@@ -177,11 +177,11 @@ JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
 GROUP BY cv.nombre_canal;
 
 ## Funciones Implementadas
-1. Función: Validar Formato de Email
-Descripción: Verifica si el correo electrónico de un cliente está en un formato válido.
-Propósito: Garantizar que los correos electrónicos registrados sean correctos, evitando datos incorrectos o inválidos.
+**1. Función: Validar Formato de Email**
+**Descripción:** Verifica si el correo electrónico de un cliente está en un formato válido.
+**Propósito:** Garantizar que los correos electrónicos registrados sean correctos, evitando datos incorrectos o inválidos.
 
-CODIGO:
+**CODIGO:**
 DELIMITER //
 CREATE FUNCTION polipiel.fx_validar_email(email VARCHAR(200))
 RETURNS BOOLEAN
@@ -193,18 +193,18 @@ BEGIN
 END //
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 SELECT 
     nombre, 
     email, 
     polipiel.fx_validar_email(email) AS email_valido
 FROM polipiel.cliente;
 
-2. Función: Validar Disponibilidad de Materiales
-Descripción: Comprueba si existe suficiente stock de un material específico para cubrir una cantidad requerida.
-Propósito: Ayudar a evitar la generación de órdenes para productos que no pueden fabricarse por falta de materiales.
+**2. Función: Validar Disponibilidad de Materiales**
+**Descripción:** Comprueba si existe suficiente stock de un material específico para cubrir una cantidad requerida.
+**Propósito:** Ayudar a evitar la generación de órdenes para productos que no pueden fabricarse por falta de materiales.
 
-CODIGO:
+**CODIGO:**
 DELIMITER //
 CREATE FUNCTION polipiel.fx_validar_stock_material(fk_material INT, cantidad_requerida INT)
 RETURNS BOOLEAN
@@ -218,7 +218,7 @@ BEGIN
 END //
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 SELECT 
     fk_material, 
     cantidad_requerida, 
@@ -226,11 +226,11 @@ SELECT
 FROM polipiel.producto_material;
 
 ## Procedimientos Implementadas
-1. Procedimiento: Actualizar Precios de Detalle de Venta
-Descripción: Permite aplicar incrementos o rebajas porcentuales a los precios unitarios de los productos en los detalles de ventas. También actualiza automáticamente los subtotales y registra el porcentaje aplicado.
-Propósito: Facilitar el mantenimiento de precios al reflejar ajustes globales en los valores de los productos, asegurando la consistencia de los subtotales.
+**1. Procedimiento: Actualizar Precios de Detalle de Venta**
+**Descripción:** Permite aplicar incrementos o rebajas porcentuales a los precios unitarios de los productos en los detalles de ventas. También actualiza automáticamente los subtotales y registra el porcentaje aplicado.
+**Propósito:** Facilitar el mantenimiento de precios al reflejar ajustes globales en los valores de los productos, asegurando la consistencia de los subtotales.
 
-CÓDIGO:
+**CÓDIGO:**
 DROP PROCEDURE IF EXISTS polipiel.sp_actualizar_precios_detalle_venta;
 
 DELIMITER //
@@ -254,15 +254,15 @@ BEGIN
 END //
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 CALL polipiel.sp_actualizar_precios_detalle_venta(10); -- Incrementa precios en 10%
 CALL polipiel.sp_actualizar_precios_detalle_venta(-5); -- Rebaja precios en 5%
 
-2. Procedimiento: Generar Reporte de Ventas Mensual
-Descripción: Genera un informe con las ventas realizadas en un mes específico, desglosadas por producto. Incluye la cantidad total vendida, el monto total de ventas y las fechas de venta.
-Propósito: Proveer un resumen mensual que ayude en el análisis de desempeño de productos y temporadas.
+**2. Procedimiento: Generar Reporte de Ventas Mensual**
+**Descripción:** Genera un informe con las ventas realizadas en un mes específico, desglosadas por producto. Incluye la cantidad total vendida, el monto total de ventas y las fechas de venta.
+**Propósito:** Proveer un resumen mensual que ayude en el análisis de desempeño de productos y temporadas.
 
-CÓDIGO:
+**CÓDIGO:**
 DROP PROCEDURE IF EXISTS polipiel.reporte_ventas_mensual;
 
 DELIMITER //
@@ -290,15 +290,15 @@ BEGIN
 END //
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 CALL polipiel.reporte_ventas_mensual(2024, 1); -- Genera reporte para enero de 2024
 
 ## Triggers Implementados
-1. Trigger: Registrar Cambios en el Estado de Ventas
-Descripción: Registra en una tabla de auditoría (historial_venta) cada cambio en el estado de una venta, almacenando el estado anterior, el nuevo estado, y otros datos relevantes como el empleado que realizó la acción y la fecha del cambio.
-Propósito: Proveer un historial detallado para auditar los cambios en las ventas y garantizar trazabilidad.
+**1. Trigger: Registrar Cambios en el Estado de Ventas**
+**Descripción:** Registra en una tabla de auditoría (historial_venta) cada cambio en el estado de una venta, almacenando el estado anterior, el nuevo estado, y otros datos relevantes como el empleado que realizó la acción y la fecha del cambio.
+**Propósito:** Proveer un historial detallado para auditar los cambios en las ventas y garantizar trazabilidad.
 
-CÓDIGO:
+**CÓDIGO:**
 DROP TRIGGER IF EXISTS polipiel.registrar_historial_venta;
 
 DELIMITER //
@@ -314,24 +314,24 @@ BEGIN
 END //
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 INSERT INTO polipiel.venta (fk_cliente, fk_empleado, fk_pago, fk_canal, fk_transporte, fecha_venta, estado, total)
 VALUES (5, 5, 1, 1, 1, '2024-11-27', 'Pendiente', 150000.00);
 
-ACTUALIZAR EL ESTADO DE LA VENTA:
+**ACTUALIZAR EL ESTADO DE LA VENTA:**
 UPDATE polipiel.venta
 SET estado = 'Enviado'
 WHERE id_venta = 11; -- Usar el ID correspondiente
 
-CONSULTAR EL HISTORIAL DE LA VENTA:
+**CONSULTAR EL HISTORIAL DE LA VENTA:**
 SELECT * 
 FROM polipiel.historial_venta 
 WHERE fk_venta = 11;
 
-2. Trigger:
-Descripción: Este trigger asegura que antes de insertar un registro en la tabla detalle_venta, la cantidad solicitada del producto no exceda la cantidad disponible en el stock de materiales necesarios para fabricarlo
+**2. Trigger:**
+**Descripción:** Este trigger asegura que antes de insertar un registro en la tabla detalle_venta, la cantidad solicitada del producto no exceda la cantidad disponible en el stock de materiales necesarios para fabricarlo
 
-CÓDIGO:
+**CÓDIGO:**
 DELIMITER //
 
 CREATE TRIGGER validar_stock_simple
@@ -354,15 +354,15 @@ END //
 
 DELIMITER ;
 
-EJEMPLO DE USO:
+**EJEMPLO DE USO:**
 INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
 VALUES (1, 1, 5, 1000.00, 5000.00); 
 
-1. Insertar un Detalle de Venta con Stock Suficiente
+**1. Insertar un Detalle de Venta con Stock Suficiente**
 INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
 VALUES (1, 1, 5, 1000.00, 5000.00); 
 
-2. Insertar un Detalle de Venta con Stock Insuficiente
+**2. Insertar un Detalle de Venta con Stock Insuficiente**
 INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
 VALUES (1, 1, 1000, 1000.00, 1000000.00); -- Ajustar valores según el stock actual
 
