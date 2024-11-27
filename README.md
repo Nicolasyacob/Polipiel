@@ -144,10 +144,10 @@ Este modelo facilita la gestión integral de la empresa, permitiendo:
 - Controlar el stock de materiales y productos, incluyendo las relaciones con los proveedores y empleados responsables.
 - Analizar ventas por canales y métodos de pago, obteniendo una mejor visión sobre el rendimiento comercial de la empresa.
 
-## Vistas, Funciones, Procedimientos y Triggers Implementadas
+## Vistas, Funciones, Procedimientos y Triggers
 
 ## Vistas Implementadas
-**- 1.Vista: Ventas Totales por Cliente**
+**1. Vista: Ventas Totales por Cliente**
 **Descripción**: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
 **Propósito**: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
 
@@ -162,7 +162,7 @@ FROM polipiel.cliente c
 JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
 GROUP BY c.id_cliente, c.nombre, c.apellido;
 
-**- 2.Vista: Ventas por Canal de Venta**
+**2.Vista: Ventas por Canal de Venta**
 **Descripción:** Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
 **Propósito:** Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
 
