@@ -1,1 +1,27 @@
+USE polipiel;
+                                                              --VISTAS--
+-- Vista 1: Ventas Totales por Cliente
+-- Esta vista muestra el total de ventas por cada cliente.
+
+CREATE VIEW polipiel.ventas_totales_por_cliente AS
+SELECT 
+    c.id_cliente,
+    c.nombre,
+    c.apellido,
+    SUM(v.total) AS total_ventas
+FROM polipiel.cliente c
+JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
+GROUP BY c.id_cliente, c.nombre, c.apellido;
+    
+-- Vista 2: Ventas por Canal de Venta
+-- Esta vista muestra las ventas totales agrupadas por cada canal de venta.
+
+CREATE VIEW polipiel.ventas_por_canal AS
+SELECT 
+    cv.nombre_canal,
+    COUNT(v.id_venta) AS cantidad_ventas,
+    SUM(v.total) AS total_ventas
+FROM polipiel.venta v
+JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
+GROUP BY cv.nombre_canal;
 
