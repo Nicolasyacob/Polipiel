@@ -1,1 +1,63 @@
+--TRIGGERS--
+USE polipiel;
 
+-- Trigger de Auditoría: registrar los cambios en el estado de las ventas, proporcionando un historial detallado de cada actualización.
+DROP TRIGGER IF EXISTS polipiel.registrar_historial_venta;
+
+DELIMITER //
+
+CREATE TRIGGER polipiel.registrar_historial_venta
+AFTER UPDATE ON polipiel.venta
+FOR EACH ROW
+BEGIN
+    IF NEW.estado != OLD.estado THEN
+        INSERT INTO polipiel.historial_venta (fk_venta, fk_empleado, estado_anterior, estado_nuevo, fecha_cambio, comentario)
+        VALUES (NEW.id_venta, NEW.fk_empleado, OLD.estado, NEW.estado, NOW(), 'Estado actualizado');
+    END IF;
+END //
+
+DELIMITER ;
+
+INSERT INTO polipiel.venta (fk_cliente, fk_empleado, fk_pago, fk_canal, fk_transporte, fecha_venta, estado, total)
+VALUES (5, 5, 1, 1, 1, '2024-11-27', 'Pendiente', 150000.00);
+
+UPDATE polipiel.venta
+SET estado = 'Enviado'
+WHERE id_venta = 11;  -- acá se agrega el ID de la venta que se inserto (IMPORTANTE)
+
+SELECT * FROM historial_venta WHERE fk_venta = 11; -- con esa consulta puedo chequear si mi triggers funcionó y me actualizó la tabla de historial_venta
+
+------------------------------------------------------------
+
+DROP TRIGGER IF EXISTS polipiel.validar_stock_simple;
+
+-- Trigger para Validar Disponibilidad de Stock
+DELIMITER //
+
+CREATE TRIGGER polipiel.validar_stock_simple
+BEFORE INSERT ON polipiel.detalle_venta
+FOR EACH ROW
+BEGIN
+    DECLARE stock_disponible INT;
+
+    -- Obtener la cantidad disponible del material asociado al producto
+    SELECT SUM(sm.cantidad_disponible) INTO stock_disponible
+    FROM polipiel.stock_material sm
+    JOIN polipiel.producto_material pm ON sm.fk_material = pm.fk_material
+    WHERE pm.fk_producto = NEW.fk_producto;
+
+    -- Validar que la cantidad disponible sea suficiente
+    IF stock_disponible < NEW.cantidad THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Stock insuficiente para el producto';
+    END IF;
+END //
+
+DELIMITER ;
+
+-- Insertar un Detalle de Venta con Stock Suficiente:
+INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
+VALUES (1, 1, 5, 1000.00, 5000.00);
+
+-- Insertar un Detalle de Venta con Stock Insuficiente:
+INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
+VALUES (1, 1, 1000, 1000.00, 1000000.00);  -- Ajusta valores para asegurarte de que el stock sea insuficiente
