@@ -5,4 +5,4 @@ FROM polipiel.venta
 GROUP BY estado;
 
 
-![image]()
+![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard.png)
