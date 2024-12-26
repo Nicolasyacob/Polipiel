@@ -1,3 +1,5 @@
+![Portada](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Imagen1.jpg)
+
 ### README - Base de Datos para "Polipiel" - Segunda Entrega ###
 
 Descripción General 📋
