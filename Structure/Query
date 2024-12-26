@@ -1,1 +1,7 @@
+USE polipiel;
+
+SELECT estado, COUNT(id_venta) AS Registros
+FROM polipiel.venta
+GROUP BY estado;
+
 
