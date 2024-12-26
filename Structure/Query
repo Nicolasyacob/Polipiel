@@ -5,3 +5,4 @@ FROM polipiel.venta
 GROUP BY estado;
 
 
+![image]()
