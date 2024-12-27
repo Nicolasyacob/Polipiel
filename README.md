@@ -368,7 +368,7 @@ VALUES (1, 1, 5, 1000.00, 5000.00);
 INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
 VALUES (1, 1, 1000, 1000.00, 1000000.00); -- Ajustar valores según el stock actual
 
-## Resultado esperado: El sistema lanza el error: Stock insuficiente para el producto, y la inserción es cancelada.
+**Resultado esperado: El sistema lanza el error: Stock insuficiente para el producto, y la inserción es cancelada.**
 
 
 
