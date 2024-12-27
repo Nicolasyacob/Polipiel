@@ -1,4 +1,10 @@
--- Creaciones de roles
+-- Creación de la base de datos si no existe
+CREATE DATABASE IF NOT EXISTS polipiel;
+
+-- Uso de la base de datos
+USE polipiel;
+
+-- Creación roles
 CREATE ROLE 'administrativo';
 CREATE ROLE 'gerente';
 CREATE ROLE 'vendedor';
@@ -32,7 +38,16 @@ GRANT 'gerente' TO 'gerente_user'@'localhost';
 GRANT 'vendedor' TO 'vendedor_user'@'localhost';
 GRANT 'invitado' TO 'invitado_user'@'localhost';
 
--- Asignar permisos específicos a los usuarios
+-- Asegurar permisos específicos para los usuarios
 GRANT ALL PRIVILEGES ON polipiel.* TO 'gerente_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON polipiel.venta TO 'admin_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON polipiel.cliente TO 'admin_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON polipiel.producto TO 'admin_user'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE ON polipiel.venta TO 'vendedor_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON polipiel.cliente TO 'vendedor_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON polipiel.producto TO 'vendedor_user'@'localhost';
+
+GRANT SELECT ON polipiel.* TO 'invitado_user'@'localhost';
 
 FLUSH PRIVILEGES;
