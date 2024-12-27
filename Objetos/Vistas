@@ -12,6 +12,9 @@ SELECT
 FROM polipiel.cliente c
 JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
 GROUP BY c.id_cliente, c.nombre, c.apellido;
+
+-- Ejemplo de uso:
+SELECT * FROM polipiel.ventas_totales_por_cliente;
     
 -- Vista 2: Ventas por Canal de Venta
 -- Esta vista muestra las ventas totales agrupadas por cada canal de venta.
@@ -24,4 +27,24 @@ SELECT
 FROM polipiel.venta v
 JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
 GROUP BY cv.nombre_canal;
+
+-- Ejemplo de uso:
+SELECT * FROM polipiel.ventas_por_canal;
+
+-- Vista 3: Ventas por Método de Pago
+-- Esta vista muestra el total de ventas agrupadas por cada método de pago, incluyendo la cantidad de ventas y el monto total generado por cada uno.
+
+CREATE VIEW polipiel.ventas_por_metodo_pago AS
+SELECT 
+    p.metodo_pago,
+    COUNT(v.id_venta) AS cantidad_ventas,
+    SUM(v.total) AS total_ventas
+FROM polipiel.venta v
+JOIN polipiel.pago p ON v.fk_pago = p.id_pago
+GROUP BY p.metodo_pago;
+
+-- Ejemplo de uso:
+SELECT * FROM polipiel.ventas_por_metodo_pago;
+
+
 
