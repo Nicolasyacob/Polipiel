@@ -486,6 +486,20 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `ventas_por_metodo_pago`
+--
+
+DROP TABLE IF EXISTS `ventas_por_metodo_pago`;
+/*!50001 DROP VIEW IF EXISTS `ventas_por_metodo_pago`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `ventas_por_metodo_pago` AS SELECT 
+ 1 AS `metodo_pago`,
+ 1 AS `cantidad_ventas`,
+ 1 AS `total_ventas`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `ventas_totales_por_cliente`
 --
 
@@ -644,6 +658,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `ventas_por_metodo_pago`
+--
+
+/*!50001 DROP VIEW IF EXISTS `ventas_por_metodo_pago`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `ventas_por_metodo_pago` AS select `p`.`metodo_pago` AS `metodo_pago`,count(`v`.`id_venta`) AS `cantidad_ventas`,sum(`v`.`total`) AS `total_ventas` from (`venta` `v` join `pago` `p` on((`v`.`fk_pago` = `p`.`id_pago`))) group by `p`.`metodo_pago` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `ventas_totales_por_cliente`
 --
 
@@ -670,5 +702,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-26 15:54:34
-
+-- Dump completed on 2024-12-27 11:41:37
