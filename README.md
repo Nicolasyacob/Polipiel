@@ -149,11 +149,11 @@ Este modelo facilita la gestión integral de la empresa, permitiendo:
 ## Vistas, Funciones, Procedimientos y Triggers
 
 ## Vistas Implementadas
-**1. Vista:** Ventas Totales por Cliente
+**- 1. Vista:** Ventas Totales por Cliente
 
-**Descripción**: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
+**- Descripción**: Esta vista consolida la información de las ventas realizadas por cliente, mostrando el total acumulado de las ventas asociadas a cada uno.
 
-**Propósito**: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
+**- Propósito**: Permitir un análisis detallado del rendimiento de las ventas por cliente, útil para identificar a los clientes más frecuentes o con mayores contribuciones.
 
 **CODIGO:**
 CREATE VIEW polipiel.ventas_totales_por_cliente AS
@@ -166,11 +166,11 @@ FROM polipiel.cliente c
 JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
 GROUP BY c.id_cliente, c.nombre, c.apellido;
 
-**2.Vista:** Ventas por Canal de Venta
+**- 2.Vista:** Ventas por Canal de Venta
 
-**Descripción:** Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
+**- Descripción:** Muestra el total de ventas agrupadas por cada canal de venta, incluyendo la cantidad de ventas y el monto total generado por cada uno.
 
-**Propósito:** Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
+**- Propósito:** Facilitar el análisis de los canales de venta más rentables y con mayor cantidad de transacciones.
 
 **CODIGO:** 
 CREATE VIEW polipiel.ventas_por_canal AS
@@ -183,11 +183,11 @@ JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
 GROUP BY cv.nombre_canal;
 
 ## Funciones Implementadas
-**1. Función:** Validar Formato de Email
+**- 1. Función:** Validar Formato de Email
 
-**Descripción:** Verifica si el correo electrónico de un cliente está en un formato válido.
+**- Descripción:** Verifica si el correo electrónico de un cliente está en un formato válido.
 
-**Propósito:** Garantizar que los correos electrónicos registrados sean correctos, evitando datos incorrectos o inválidos.
+**- Propósito:** Garantizar que los correos electrónicos registrados sean correctos, evitando datos incorrectos o inválidos.
 
 **CODIGO:**
 DELIMITER //
@@ -208,11 +208,11 @@ SELECT
     polipiel.fx_validar_email(email) AS email_valido
 FROM polipiel.cliente;
 
-**2. Función:** Validar Disponibilidad de Materiales
+**- 2.Función:** Validar Disponibilidad de Materiales
 
-**Descripción:** Comprueba si existe suficiente stock de un material específico para cubrir una cantidad requerida.
+**- Descripción:** Comprueba si existe suficiente stock de un material específico para cubrir una cantidad requerida.
 
-**Propósito:** Ayudar a evitar la generación de órdenes para productos que no pueden fabricarse por falta de materiales.
+**- Propósito:** Ayudar a evitar la generación de órdenes para productos que no pueden fabricarse por falta de materiales.
 
 **CODIGO:**
 DELIMITER //
@@ -237,11 +237,11 @@ FROM polipiel.producto_material;
 
 ## Procedimientos Implementadas 
 
-**1. Procedimiento:** Actualizar Precios de Detalle de Venta
+**- 1. Procedimiento:** Actualizar Precios de Detalle de Venta
 
-**Descripción:** Permite aplicar incrementos o rebajas porcentuales a los precios unitarios de los productos en los detalles de ventas. También actualiza automáticamente los subtotales y registra el porcentaje aplicado.
+**- Descripción:** Permite aplicar incrementos o rebajas porcentuales a los precios unitarios de los productos en los detalles de ventas. También actualiza automáticamente los subtotales y registra el porcentaje aplicado.
 
-**Propósito:** Facilitar el mantenimiento de precios al reflejar ajustes globales en los valores de los productos, asegurando la consistencia de los subtotales.
+**- Propósito:** Facilitar el mantenimiento de precios al reflejar ajustes globales en los valores de los productos, asegurando la consistencia de los subtotales.
 
 **CÓDIGO:**
 DROP PROCEDURE IF EXISTS polipiel.sp_actualizar_precios_detalle_venta;
@@ -271,11 +271,11 @@ DELIMITER ;
 CALL polipiel.sp_actualizar_precios_detalle_venta(10); -- Incrementa precios en 10%
 CALL polipiel.sp_actualizar_precios_detalle_venta(-5); -- Rebaja precios en 5%
 
-**2. Procedimiento:** Generar Reporte de Ventas Mensual
+**- 2. Procedimiento:** Generar Reporte de Ventas Mensual
 
-**Descripción:** Genera un informe con las ventas realizadas en un mes específico, desglosadas por producto. Incluye la cantidad total vendida, el monto total de ventas y las fechas de venta.
+**-Descripción:** Genera un informe con las ventas realizadas en un mes específico, desglosadas por producto. Incluye la cantidad total vendida, el monto total de ventas y las fechas de venta.
 
-**Propósito:** Proveer un resumen mensual que ayude en el análisis de desempeño de productos y temporadas.
+**-Propósito:** Proveer un resumen mensual que ayude en el análisis de desempeño de productos y temporadas.
 
 **CÓDIGO:**
 DROP PROCEDURE IF EXISTS polipiel.reporte_ventas_mensual;
@@ -310,11 +310,11 @@ CALL polipiel.reporte_ventas_mensual(2024, 1); -- Genera reporte para enero de 2
 
 ## Triggers Implementados
 
-**1. Trigger:** Registrar Cambios en el Estado de Ventas
+**-1. Trigger:** Registrar Cambios en el Estado de Ventas
 
-**Descripción:** Registra en una tabla de auditoría (historial_venta) cada cambio en el estado de una venta, almacenando el estado anterior, el nuevo estado, y otros datos relevantes como el empleado que realizó la acción y la fecha del cambio.
+**-Descripción:** Registra en una tabla de auditoría (historial_venta) cada cambio en el estado de una venta, almacenando el estado anterior, el nuevo estado, y otros datos relevantes como el empleado que realizó la acción y la fecha del cambio.
 
-**Propósito:** Proveer un historial detallado para auditar los cambios en las ventas y garantizar trazabilidad.
+**-Propósito:** Proveer un historial detallado para auditar los cambios en las ventas y garantizar trazabilidad.
 
 **CÓDIGO:**
 DROP TRIGGER IF EXISTS polipiel.registrar_historial_venta;
