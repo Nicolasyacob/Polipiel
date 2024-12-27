@@ -18,6 +18,3 @@ ORDER BY
 SELECT estado, COUNT(id_venta) AS Registros
 FROM polipiel.venta
 GROUP BY estado;
-
-
-![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard.png)
