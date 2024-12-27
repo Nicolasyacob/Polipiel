@@ -1,3 +1,4 @@
+-- Crear roles
 CREATE ROLE 'administrativo';
 CREATE ROLE 'gerente';
 CREATE ROLE 'vendedor';
@@ -11,10 +12,10 @@ GRANT SELECT, INSERT, UPDATE ON polipiel.venta TO 'administrativo';
 GRANT SELECT, INSERT, UPDATE ON polipiel.cliente TO 'administrativo';
 GRANT SELECT, INSERT, UPDATE ON polipiel.producto TO 'administrativo';
 
--- Vendedor: Permisos de insertar y leer en las tablas de ventas, clientes y productos
-GRANT SELECT, INSERT ON polipiel.venta TO 'vendedor';
-GRANT SELECT, INSERT ON polipiel.cliente TO 'vendedor';
-GRANT SELECT, INSERT ON polipiel.producto TO 'vendedor';
+-- Vendedor: Permisos de insertar, leer y actualizar en las tablas de ventas, clientes y productos
+GRANT SELECT, INSERT, UPDATE ON polipiel.venta TO 'vendedor';
+GRANT SELECT, INSERT, UPDATE ON polipiel.cliente TO 'vendedor';
+GRANT SELECT, INSERT, UPDATE ON polipiel.producto TO 'vendedor';
 
 -- Invitado: Permisos solo de lectura
 GRANT SELECT ON polipiel.* TO 'invitado';
@@ -30,5 +31,8 @@ GRANT 'administrativo' TO 'admin_user'@'localhost';
 GRANT 'gerente' TO 'gerente_user'@'localhost';
 GRANT 'vendedor' TO 'vendedor_user'@'localhost';
 GRANT 'invitado' TO 'invitado_user'@'localhost';
+
+-- Asignar permisos específicos a los usuarios
+GRANT ALL PRIVILEGES ON polipiel.* TO 'gerente_user'@'localhost';
 
 FLUSH PRIVILEGES;
