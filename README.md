@@ -201,7 +201,7 @@ BEGIN
 END //
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 SELECT 
     nombre, 
     email, 
@@ -228,14 +228,14 @@ BEGIN
 END //
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 SELECT 
     fk_material, 
     cantidad_requerida, 
     polipiel.fx_validar_stock_material(fk_material, cantidad_requerida) AS suficiente_stock
 FROM polipiel.producto_material;
 
-## Procedimientos Implementadas
+## Procedimientos Implementadas 
 
 **1. Procedimiento:** Actualizar Precios de Detalle de Venta
 
@@ -267,7 +267,7 @@ BEGIN
 END //
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 CALL polipiel.sp_actualizar_precios_detalle_venta(10); -- Incrementa precios en 10%
 CALL polipiel.sp_actualizar_precios_detalle_venta(-5); -- Rebaja precios en 5%
 
@@ -305,7 +305,7 @@ BEGIN
 END //
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 CALL polipiel.reporte_ventas_mensual(2024, 1); -- Genera reporte para enero de 2024
 
 ## Triggers Implementados
@@ -332,16 +332,16 @@ BEGIN
 END //
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 INSERT INTO polipiel.venta (fk_cliente, fk_empleado, fk_pago, fk_canal, fk_transporte, fecha_venta, estado, total)
 VALUES (5, 5, 1, 1, 1, '2024-11-27', 'Pendiente', 150000.00);
 
-**ACTUALIZAR EL ESTADO DE LA VENTA:**
+**Actualizar el estado de la venta:**
 UPDATE polipiel.venta
 SET estado = 'Enviado'
 WHERE id_venta = 11; -- Usar el ID correspondiente
 
-**CONSULTAR EL HISTORIAL DE LA VENTA:**
+**Consultar el historial de la venta:**
 SELECT * 
 FROM polipiel.historial_venta 
 WHERE fk_venta = 11;
@@ -372,7 +372,7 @@ END //
 
 DELIMITER ;
 
-**EJEMPLO DE USO:**
+**Ejemplo de uso:**
 INSERT INTO detalle_venta (fk_venta, fk_producto, cantidad, precio_unitario, subtotal)
 VALUES (1, 1, 5, 1000.00, 5000.00); 
 
@@ -386,6 +386,9 @@ VALUES (1, 1, 1000, 1000.00, 1000000.00); -- Ajustar valores según el stock act
 
 **Resultado esperado: El sistema lanza el error: Stock insuficiente para el producto, y la inserción es cancelada.**
 
+## DASHBOARD - POWER BI
+![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard/Dashboard_query.1.png)
 
+![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard/Dashboard_query.2.png)
 
 
