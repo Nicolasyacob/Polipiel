@@ -1,4 +1,4 @@
--- Crear roles
+-- Creaciones de roles
 CREATE ROLE 'administrativo';
 CREATE ROLE 'gerente';
 CREATE ROLE 'vendedor';
