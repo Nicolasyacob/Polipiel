@@ -1,0 +1,20 @@
+USE polipiel;
+
+---------------QUERY 1-----------------------
+SELECT 
+    cv.nombre_canal, 
+    COUNT(v.id_venta) AS total_ventas
+FROM 
+    canal_venta cv
+JOIN 
+    venta v ON cv.id_canal = v.fk_canal
+GROUP BY 
+    cv.nombre_canal
+ORDER BY 
+    total_ventas DESC;
+
+---------------QUERY 2-----------------------
+
+SELECT estado, COUNT(id_venta) AS Registros
+FROM polipiel.venta
+GROUP BY estado;
