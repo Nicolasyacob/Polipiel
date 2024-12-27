@@ -169,6 +169,9 @@ Este modelo facilita la gestión integral de la empresa, permitiendo:
     JOIN polipiel.venta v ON c.id_cliente = v.fk_cliente
     GROUP BY c.id_cliente, c.nombre, c.apellido;
     ```
+    - **Ejemplo de Uso**:
+    ```sql
+    SELECT * FROM polipiel.ventas_totales_por_cliente;
 
 #### 2. Vista: **Ventas por Canal de Venta**
 
@@ -184,6 +187,29 @@ Este modelo facilita la gestión integral de la empresa, permitiendo:
     FROM polipiel.venta v
     JOIN polipiel.canal_venta cv ON v.fk_canal = cv.id_canal
     GROUP BY cv.nombre_canal;
+    ```
+    - **Ejemplo de Uso**:
+    ```sql
+    SELECT * FROM polipiel.ventas_por_canal;
+
+### 3. Vista: **Ventas por Método de Pago**
+
+- **Descripción**: Muestra el total de ventas agrupadas por cada método de pago, incluyendo la cantidad de ventas y el monto total generado por cada uno.
+- **Propósito**: Facilitar el análisis de los métodos de pago más utilizados y rentables, permitiendo una mejor toma de decisiones sobre la oferta de opciones de pago.
+- **Código**:
+    ```sql
+    CREATE VIEW polipiel.ventas_por_metodo_pago AS
+    SELECT 
+        p.metodo_pago,
+        COUNT(v.id_venta) AS cantidad_ventas,
+        SUM(v.total) AS total_ventas
+    FROM polipiel.venta v
+    JOIN polipiel.pago p ON v.fk_pago = p.id_pago
+    GROUP BY p.metodo_pago;
+    ```
+- **Ejemplo de Uso**:
+    ```sql
+    SELECT * FROM polipiel.ventas_por_metodo_pago;
     ```
 ---
 
