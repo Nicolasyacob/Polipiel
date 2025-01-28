@@ -251,8 +251,40 @@ INSERT INTO historial_venta (id_historial_venta, fk_venta, fk_empleado, estado_a
 (17, 36, 5, 'Pendiente', 'Pendiente', '2024-04-30', 'En espera de pago'),
 (18, 48, 5, 'Pendiente', 'Pendiente', '2023-10-29', 'En espera de pago'),
 (19, 52, 5, 'Pendiente', 'Finalizada', '2024-09-30', 'Cliente satisfecho'),
-(20, 39, 5, 'Pendiente', 'Finalizada', '2024-06-25', 'Cliente satisfecho');
-;
+(20, 39, 5, 'Pendiente', 'Finalizada', '2024-06-25', 'Cliente satisfecho'),
+(21, 21, 5, 'Pendiente', 'Finalizada', '2023-01-18', 'Cliente satisfecho'), 
+(22, 22, 5, 'Pendiente', 'Finalizada', '2023-02-14', 'Cliente satisfecho'), 
+(23, 23, 5, 'Pendiente', 'Cancelada', '2023-04-23', 'Cliente solicitó la cancelación'), 
+(24, 24, 5, 'Pendiente', 'Finalizada', '2023-06-12', 'Cliente satisfecho'), 
+(25, 25, 5, 'Pendiente', 'Finalizada', '2023-07-28', 'Cliente satisfecho'), 
+(26, 26, 5, 'Pendiente', 'Cancelada', '2023-09-17', 'Cliente solicitó la cancelación'), 
+(27, 27, 5, 'Pendiente', 'Finalizada', '2023-10-03', 'Cliente satisfecho'), 
+(28, 28, 5, 'Pendiente', 'Finalizada', '2023-12-09', 'Cliente satisfecho'), 
+(29, 29, 5, 'Pendiente', 'Finalizada', '2022-03-10', 'Cliente satisfecho'), 
+(30, 30, 5, 'Pendiente', 'Finalizada', '2022-04-15', 'Cliente satisfecho'), 
+(31, 31, 5, 'Pendiente', 'Finalizada', '2022-07-22', 'Cliente satisfecho'), 
+(32, 32, 5, 'Pendiente', 'Finalizada', '2022-08-29', 'Cliente satisfecho'), 
+(33, 33, 5, 'Pendiente', 'Cancelada', '2022-11-12', 'Cliente solicitó la cancelación'), 
+(34, 34, 5, 'Pendiente', 'Finalizada', '2022-12-21', 'Cliente satisfecho'), 
+(35, 35, 5, 'Pendiente', 'Finalizada', '2024-02-20', 'Cliente satisfecho'), 
+(36, 36, 5, 'Pendiente', 'Pendiente', '2024-04-30', 'En espera de pago'), 
+(37, 37, 5, 'Pendiente', 'Finalizada', '2023-11-11', 'Cliente satisfecho'), 
+(38, 38, 5, 'Pendiente', 'Finalizada', '2023-05-20', 'Cliente satisfecho'), 
+(39, 39, 5, 'Pendiente', 'Finalizada', '2024-06-25', 'Cliente satisfecho'), 
+(40, 40, 5, 'Pendiente', 'Finalizada', '2023-03-10', 'Cliente satisfecho'), 
+(41, 41, 5, 'Pendiente', 'Finalizada', '2022-08-08', 'Cliente satisfecho'), 
+(42, 42, 5, 'Pendiente', 'Pendiente', '2024-07-15', 'En espera de pago'), 
+(43, 43, 5, 'Pendiente', 'Cancelada', '2023-12-30', 'Cliente solicitó la cancelación'), 
+(44, 44, 5, 'Pendiente', 'Finalizada', '2022-11-10', 'Cliente satisfecho'), 
+(45, 45, 5, 'Pendiente', 'Pendiente', '2024-08-08', 'En espera de pago'), 
+(46, 46, 5, 'Pendiente', 'Finalizada', '2023-09-15', 'Cliente satisfecho'), 
+(47, 47, 5, 'Pendiente', 'Finalizada', '2024-05-11', 'Cliente satisfecho'), 
+(48, 48, 5, 'Pendiente', 'Pendiente', '2023-10-29', 'En espera de pago'), 
+(49, 49, 5, 'Pendiente', 'Finalizada', '2024-06-19', 'Cliente satisfecho'), 
+(50, 50, 5, 'Pendiente', 'Finalizada', '2023-11-14', 'Cliente satisfecho'), 
+(51, 51, 5, 'Pendiente', 'Finalizada', '2022-12-22', 'Cliente satisfecho'), 
+(52, 52, 5, 'Pendiente', 'Finalizada', '2024-09-30', 'Cliente satisfecho');
+;  
 
 -- Tabla de productos-materiales (asociación) 
 INSERT INTO producto_material (id_producto_material, fk_producto, fk_material, cantidad_requerida) VALUES 
