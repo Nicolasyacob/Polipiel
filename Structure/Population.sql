@@ -12,7 +12,7 @@ INSERT INTO cliente (id_cliente, nombre, apellido, telefono, direccion, email, r
 (7, 'Juliana', 'Castro', '15369654', 'Av. Roja 456', 'juliana.castro@gmail.com', 'Facebook', '2024-01-26'),
 (8, 'Daniel', 'Vega', '15133326', 'Ruta 32', 'daniel.vega@gmail.com', 'WhatsApp', '2024-01-27'),
 (9, 'Laura', 'Duarte', '15112211', 'Calle Verde 789', 'laura.duarte@gmail.com', 'Mercado Libre', '2024-01-28'),
-(10, 'Pablo', 'Fernández', '15431212', 'Barrio Norte 111', 'pablo.fernandez@gmail.com', 'Instagram', '2024-01-29')
+(10, 'Pablo', 'Fernández', '15431212', 'Barrio Norte 111', 'pablo.fernandez@gmail.com', 'Instagram', '2024-01-29'),
 (11, 'Marcela', 'García', '15522346', 'Calle Amarilla 12', 'marcela.garcia@gmail.com', 'Instagram', '2024-02-05'), 
 (12, 'Esteban', 'Torres', '15622147', 'Av. Central 85', 'esteban.torres@gmail.com', 'Facebook', '2024-03-10'), 
 (13, 'Florencia', 'Alvarez', '15213488', 'Pasaje Blanco 15', 'florencia.alvarez@gmail.com', 'WhatsApp', '2024-04-15'), 
