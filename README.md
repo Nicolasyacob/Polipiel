@@ -533,7 +533,7 @@ La configuración de roles y usuarios en la base de datos `polipiel` está dise�
 ---
 
 ## DASHBOARD - POWER BI
-![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard/Dashboard_query.1.png)
+![image](https://github.com/user-attachments/assets/0b2be15b-444c-47b6-9d1d-c81ba2e29199)
 
 ![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard/Dashboard_query.2.png)
 
