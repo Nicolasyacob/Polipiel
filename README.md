@@ -540,6 +540,4 @@ La configuración de roles y usuarios en la base de datos `polipiel` está dise�
 ![image](https://github.com/user-attachments/assets/85280668-5607-4626-82db-fffde1455f34)
 
 
-![image](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Dashboard/Dashboard_query.2.png)
-
 
