@@ -1,6 +1,6 @@
 ![Portada](https://github.com/Nicolasyacob/Segunda_Entrega_SQL/blob/main/Imagen.jpeg)
 
-### README - Base de Datos para "Polipiel" - Segunda Entrega ###
+### README - Base de Datos para "Polipiel" ###
 
 Descripción General 📋
 El emprendimiento familiar "Polipiel" se dedica a la fabricación y venta de productos personalizados y estándar como manteles, fundas de sillas, paneras, cubre sommier, y otros artículos de decoración, empleando materiales como cuerina, ecocuero, PVC, entre otros. Las ventas se realizan principalmente a través de redes sociales, sitios de e-commerce y WhatsApp. La empresa adquiere materia prima de proveedores locales para su fabricación, y distribuye los productos terminados mediante transportes a sus clientes.
